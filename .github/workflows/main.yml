@@ -1,0 +1,29 @@
+name: Send Messages
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # This will run the workflow every 6 hours
+
+jobs:
+  send-messages:
+    runs-on: ubuntu-latest
+
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests colorama python-dotenv
+
+      - name: Run the script
+        run: python main.py
