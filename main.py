@@ -47,8 +47,8 @@ def send_messages():
             # Move to the next line
             index = (index + 1) % len(words)  # Loop back to the start when reaching the end
 
-            # Wait for 120 seconds before sending the next message
-            time.sleep(120)
+            # Wait for 100 seconds before sending the next message
+            time.sleep(100)
         except Exception as e:
             print(Fore.RED + f"Error: {e}")
             time.sleep(5)  # Wait a bit before retrying in case of error
