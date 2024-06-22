@@ -15,7 +15,7 @@ authorization = os.getenv("TOKEN")
 
 def send_messages():
     # Set the channel ID where messages will be sent
-    channel_id = "1242194964830748876"
+    channel_id = "1242400774399725588"
 
     # Read the messages from "pesan.txt"
     with open("pesan.txt", "r", encoding="utf-8") as f:
