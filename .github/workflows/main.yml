@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 */6 * * *'  # Runs every 6 hours
+
+concurrency:
+  group: send-discord-messages
+  cancel-in-progress: true
 
 jobs:
   send-messages:
@@ -25,8 +27,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run the script
+    - name: Run the script with restart
       env:
         TOKEN: ${{ secrets.TOKEN }}
       run: |
-        python main.py
+        while true; do
+          python main.py
+          echo "Script stopped. Restarting..."
+          sleep 5
+        done
