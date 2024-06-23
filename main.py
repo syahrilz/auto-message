@@ -50,7 +50,7 @@ def send_messages():
                 message_id = r.json()['id']
 
                 # Wait for 1 second before deleting the message
-                time.sleep(1)
+                time.sleep(0)
 
                 # Delete the message
                 delete_r = requests.delete(f"https://discord.com/api/v9/channels/{channel_id}/messages/{message_id}", headers=headers)
