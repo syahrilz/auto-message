@@ -60,27 +60,26 @@ def send_messages():
                         print(Fore.GREEN + "Success: Message deleted successfully.")
                         last_delete_status = 'success'
                 else:
-                    if last_delete_status != 'fail':
+                    if last_delete_status != f'fail_{delete_r.status_code}':
                         print(Fore.RED + f"Error: Failed to delete message. Status code: {delete_r.status_code}")
-                        last_delete_status = 'fail'
+                        last_delete_status = f'fail_{delete_r.status_code}'
 
             else:
-                if last_send_status != 'fail':
+                if last_send_status != f'fail_{r.status_code}':
                     print(Fore.RED + f"Error: Failed to send message. Status code: {r.status_code}")
-                    last_send_status = 'fail'
+                    last_send_status = f'fail_{r.status_code}'
 
             # Move to the next line
             index = (index + 1) % len(words)  # Loop back to the start when reaching the end
 
             # Wait for 5 seconds before sending the next message
-            time.sleep(1)
+            time.sleep(5)
         except Exception as e:
-            if last_send_status != 'error':
+            if last_send_status != f'error_{e}':
                 print(Fore.RED + f"Error: {e}")
-                last_send_status = 'error'
+                last_send_status = f'error_{e}'
             time.sleep(5)  # Wait a bit before retrying in case of error
 
 # Run the message sending function
 if __name__ == '__main__':
     send_messages()
-    
