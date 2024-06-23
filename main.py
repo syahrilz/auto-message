@@ -24,7 +24,10 @@ def send_messages():
     # Initialize the index to keep track of the current line
     index = 0
 
-    # Loop to send messages every 100 seconds
+    # Initialize the last printed message
+    last_message = None
+
+    # Loop to send messages every 5 seconds
     while True:
         try:
             payload = {
@@ -32,15 +35,19 @@ def send_messages():
             }
 
             headers = {
-                'Authorization': authorization
+                'Authorization': f'Bot {authorization}',  # Correct format for bot authorization
+                'Content-Type': 'application/json'  # Ensure the content type is set to JSON
             }
 
             # Send the message
-            r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+            r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", json=payload, headers=headers)
 
-            # Check if message sent successfully
+            # Construct the success or failure message
             if r.status_code == 200:
-                print(Fore.GREEN + "Success: Message sent successfully.")
+                success_message = "Success: Message sent successfully."
+                if last_message != success_message:
+                    print(Fore.GREEN + success_message)
+                    last_message = success_message
 
                 # Get the message ID from the response
                 message_id = r.json()['id']
@@ -51,13 +58,22 @@ def send_messages():
                 # Delete the message
                 delete_r = requests.delete(f"https://discord.com/api/v9/channels/{channel_id}/messages/{message_id}", headers=headers)
 
-                if delete_r.status_code == 200:
-                    print(Fore.GREEN + "Success: Message deleted successfully.")
+                if delete_r.status_code == 204:  # 204 No Content indicates successful deletion
+                    delete_success_message = "Success: Message deleted successfully."
+                    if last_message != delete_success_message:
+                        print(Fore.GREEN + delete_success_message)
+                        last_message = delete_success_message
                 else:
-                    print(Fore.RED + f"Error: Failed to delete message. Status code: {delete_r.status_code}")
+                    delete_error_message = f"Error: Failed to delete message. Status code: {delete_r.status_code}"
+                    if last_message != delete_error_message:
+                        print(Fore.RED + delete_error_message)
+                        last_message = delete_error_message
 
             else:
-                print(Fore.RED + f"Error: Failed to send message. Status code: {r.status_code}")
+                send_error_message = f"Error: Failed to send message. Status code: {r.status_code}"
+                if last_message != send_error_message:
+                    print(Fore.RED + send_error_message)
+                    last_message = send_error_message
 
             # Move to the next line
             index = (index + 1) % len(words)  # Loop back to the start when reaching the end
@@ -65,9 +81,13 @@ def send_messages():
             # Wait for 5 seconds before sending the next message
             time.sleep(5)
         except Exception as e:
-            print(Fore.RED + f"Error: {e}")
-            time.sleep(5)  # Wait a bit before retrying in case of error
+            error_message = f"Error: {e}"
+            if last_message != error_message:
+                print(Fore.RED + error_message)
+                last_message = error_message
+            time.sleep(1)  # Wait a bit before retrying in case of error
 
 # Run the message sending function
 if __name__ == '__main__':
     send_messages()
+    
