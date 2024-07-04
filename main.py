@@ -73,7 +73,7 @@ def send_messages():
             index = (index + 1) % len(words)  # Loop back to the start when reaching the end
 
             # Wait for 5 seconds before sending the next message
-            time.sleep(10)
+            time.sleep(5)
         except Exception as e:
             if last_send_status != f'error_{e}':
                 print(Fore.RED + f"Error: {e}")
