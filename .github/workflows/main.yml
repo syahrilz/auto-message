@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '30 */6 * * *' 
+  #schedule:
+    #- cron: '30 */6 * * *' 
 jobs:
   send-messages:
     runs-on: ubuntu-latest
