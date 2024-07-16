@@ -18,7 +18,7 @@ def send_messages():
     channel_id = "771150841633439764"
 
     # Read the messages from "pesan.txt"
-    with open("pesan.txt", "r", encoding="utf-8") as f:
+    with open("text.txt", "r", encoding="utf-8") as f:
         words = [line.strip() for line in f.readlines()]
 
     # Initialize the index to keep track of the current line
