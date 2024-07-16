@@ -78,7 +78,7 @@ def send_messages():
             if last_send_status != f'error_{e}':
                 print(Fore.RED + f"Error: {e}")
                 last_send_status = f'error_{e}'
-            time.sleep(5)  # Wait a bit before retrying in case of error
+            time.sleep(1)  # Wait a bit before retrying in case of error
 
 # Run the message sending function
 if __name__ == '__main__':
